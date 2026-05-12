@@ -182,10 +182,7 @@ Una volta avviata, apri il browser e vai su:
 | Servizio | URL | Descrizione |
 |---|---|---|
 | **Applicazione principale** | http://localhost:5173 | Interfaccia utente principale |
-| **Pannello amministrazione** | http://localhost:5173/admin/ | Admin Django |
-| **Editor di codice (VS Code web)** | http://localhost:8081 | Code Server integrato |
 | **Monitoraggio task** | http://localhost:5555 | Flower — dashboard Celery |
-| **API backend** | http://localhost:8000 | Endpoint REST API |
 
 ---
 
