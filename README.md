@@ -60,29 +60,8 @@ Docker Desktop include automaticamente Docker Compose. Dopo l'installazione avvi
 
 ---
 
-## 2. Installare Git
 
-### Linux
-
-```bash
-sudo apt-get install -y git
-```
-
-### macOS
-
-```bash
-brew install git
-```
-
-(Se non hai Homebrew: https://brew.sh)
-
-### Windows
-
-Scarica Git da https://git-scm.com/download/win e segui l'installazione guidata.
-
----
-
-## 3. Scaricare il progetto
+## 2. Scaricare il progetto
 
 Apri un terminale nella cartella dove vuoi installare l'applicazione, poi esegui:
 
@@ -93,7 +72,7 @@ cd rio
 
 ---
 
-## 4. Configurare il file `.env`
+## 3. Configurare il file `.env`
 
 Copia il file di esempio e rinominalo:
 
@@ -166,7 +145,7 @@ MYSQL_DATABASE=rioaction
 
 ---
 
-## 5. Avviare l'applicazione
+## 4. Avviare l'applicazione
 
 Dalla cartella del progetto esegui:
 
@@ -196,7 +175,7 @@ Dovresti vedere questi servizi con stato `running`:
 
 ---
 
-## 6. Accedere all'applicazione
+## 5. Accedere all'applicazione
 
 Una volta avviata, apri il browser e vai su:
 
@@ -210,7 +189,7 @@ Una volta avviata, apri il browser e vai su:
 
 ---
 
-## 7. Fermare l'applicazione
+## 6. Fermare l'applicazione
 
 Per fermare tutti i container:
 
@@ -226,14 +205,14 @@ docker compose -f docker-compose.dist.yml down -v
 
 ---
 
-## 8. Aggiornare l'applicazione
+## 7. Aggiornare l'applicazione
 
 Quando è disponibile una nuova versione, apparirà un avviso direttamente nell'interfaccia della piattaforma. Clicca sul pulsante **Aggiorna** nell'alert per avviare l'aggiornamento automatico.
 
 
 ---
 
-## 9. Visualizzare i log
+## 8. Visualizzare i log
 
 Per vedere i log di tutti i servizi in tempo reale:
 
