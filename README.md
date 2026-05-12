@@ -234,7 +234,7 @@ docker compose -f docker-compose.dist.yml logs -f backend
 → Controlla che le variabili `HOST_VOLUME` e `COMPOSE_PROJECT_PATH` nel file `.env` contengano percorsi esistenti sul tuo sistema.
 
 **Porta già in uso (errore "address already in use")**
-→ Un'altra applicazione sta usando quella porta. Puoi cambiare le porte nel file `.env` (es. `PORT=5174`) o fermare l'applicazione in conflitto.
+→ Un'altra applicazione sta usando quella porta
 
 **Come trovare il mio UID su Linux**
 → Apri un terminale ed esegui `id -u`. Il numero restituito va inserito in `CONTAINER_UID`.
