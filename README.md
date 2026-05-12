@@ -1,5 +1,35 @@
 # RIO — Guida all'installazione
 
+## Cos'è Rio?
+
+Rio è il tuo quartier generale personale per gestire progetti e attività di sviluppo software, con un assistente AI integrato che lavora al tuo fianco.
+
+### Cosa puoi fare
+
+**Organizza il tuo lavoro**
+Crei progetti e dentro ogni progetto gestisci le attività (task) su una board kanban — trascinale da "Da fare" a "In corso" a "Completato". Aggiungi note alle attività con il tempo impiegato, allegati, screenshot. Usa tag e priorità per trovare subito quello che conta.
+
+**Fai lavorare l'AI per te**
+Con un click, per ogni attività puoi chiedere all'AI di analizzare il problema, implementare il codice, scrivere i test o generare documentazione tecnica e per utenti finali. Puoi scegliere quale AI usare: Claude, Cursor o Codex. Mentre l'AI lavora, vedi il progresso in tempo reale.
+
+**Lavora direttamente sul codice**
+Senza uscire dalla piattaforma puoi sfogliare i file del tuo progetto, aprire un terminale direttamente nella cartella del progetto e gestire i branch Git (crea, cambia, aggiorna).
+
+**Collega GitLab**
+Se usi GitLab, puoi vedere pipeline, branch, tag e avviare job manualmente — tutto dalla pagina del progetto.
+
+**Workflow automatizzati**
+Definisci sequenze di passi ripetibili (analisi → implementazione → test → deploy) e applicale a qualsiasi attività con un click, con possibilità di approvare ogni passaggio prima di procedere.
+
+**Documentazione sempre aggiornata**
+Ogni progetto ha una sezione docs dove l'AI genera e mantiene aggiornata la documentazione tecnica e quella per gli utenti, organizzata ad albero.
+
+> Un unico posto dove tenere i tuoi progetti, delegare il lavoro ripetitivo all'AI, scrivere codice, gestire Git e tenere traccia di tutto — senza cambiare tab.
+
+---
+
+## Installazione
+
 RIO è un'applicazione web basata su Docker. Non è necessario installare Python, Node.js o altri linguaggi di programmazione: tutto gira all'interno di container Docker.
 
 ---
