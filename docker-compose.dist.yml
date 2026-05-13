@@ -112,14 +112,41 @@ services:
       - /bin/sh
       - -c
       - |
-        mkdir -p /var/lib/code-server
-        chown -R ${CONTAINER_UID}:${CONTAINER_UID} /var/lib/code-server
+        set -e
+        : "$${CONTAINER_USER:?CONTAINER_USER non impostato in .env}"
+        : "$${CONTAINER_UID:?CONTAINER_UID non impostato in .env}"
+        # Rename the existing UID-1000 user (typically "coder") to
+        # $${CONTAINER_USER} so terminals report the host username via
+        # $$USER / whoami / $$HOME instead of "coder" or a numeric UID.
+        existing_user=$$(getent passwd "$${CONTAINER_UID}" | cut -d: -f1 | head -n1)
+        existing_group=$$(getent group "$${CONTAINER_UID}" | cut -d: -f1 | head -n1)
+        if [ -n "$$existing_user" ] && [ "$$existing_user" != "$${CONTAINER_USER}" ]; then
+          if id -u "$${CONTAINER_USER}" >/dev/null 2>&1; then
+            userdel "$${CONTAINER_USER}" 2>/dev/null || true
+          fi
+          if getent group "$${CONTAINER_USER}" >/dev/null 2>&1; then
+            groupdel "$${CONTAINER_USER}" 2>/dev/null || true
+          fi
+          [ -n "$$existing_group" ] && groupmod -n "$${CONTAINER_USER}" "$$existing_group" 2>/dev/null || true
+          usermod -l "$${CONTAINER_USER}" -g "$${CONTAINER_USER}" "$$existing_user"
+        elif [ -z "$$existing_user" ]; then
+          groupadd -g "$${CONTAINER_UID}" "$${CONTAINER_USER}"
+          useradd -u "$${CONTAINER_UID}" -g "$${CONTAINER_UID}" -M -s /bin/bash "$${CONTAINER_USER}"
+        fi
         mkdir -p /var/lib/code-server/home/.config
-        chown -R ${CONTAINER_UID}:${CONTAINER_UID} /var/lib/code-server
-        exec sudo -u "#${CONTAINER_UID}" HOME=/var/lib/code-server/home XDG_CONFIG_HOME=/var/lib/code-server/home/.config /usr/bin/code-server --auth none --bind-addr 0.0.0.0:8080 --user-data-dir /var/lib/code-server/data --extensions-dir /var/lib/code-server/extensions ${HOST_VOLUME}
+        chown -R "$${CONTAINER_UID}:$${CONTAINER_UID}" /var/lib/code-server
+        usermod -d /var/lib/code-server/home -s /bin/bash "$${CONTAINER_USER}" 2>/dev/null || true
+        exec sudo -u "$${CONTAINER_USER}" \
+          HOME=/var/lib/code-server/home \
+          USER="$${CONTAINER_USER}" \
+          LOGNAME="$${CONTAINER_USER}" \
+          SHELL=/bin/bash \
+          XDG_CONFIG_HOME=/var/lib/code-server/home/.config \
+          /usr/bin/code-server --auth none --bind-addr 0.0.0.0:8080 --user-data-dir /var/lib/code-server/data --extensions-dir /var/lib/code-server/extensions ${HOST_VOLUME}
     environment:
       - TZ=Europe/Rome
       - CONTAINER_UID=${CONTAINER_UID:-1000}
+      - CONTAINER_USER=${CONTAINER_USER:-tib}
     networks:
       - project_nw
 
