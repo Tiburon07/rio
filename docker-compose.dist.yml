@@ -69,8 +69,8 @@ services:
     volumes:
       - ${HOST_VOLUME}:${HOST_VOLUME}
       - /var/run/docker.sock:/var/run/docker.sock
-      - ${COMPOSE_PROJECT_PATH}/docker-compose.dist.yml:/compose/docker-compose.dist.yml:ro
-      - ${COMPOSE_PROJECT_PATH}/${ENV_FILE:-.env}:/compose/.env:ro
+      - ${COMPOSE_PROJECT_PATH}:${COMPOSE_PROJECT_PATH}:ro
+    working_dir: ${COMPOSE_PROJECT_PATH}
     command: celery -A config worker --loglevel=info
     env_file:
       - ${ENV_FILE:-.env}
@@ -79,7 +79,8 @@ services:
     environment:
       - TZ=Europe/Rome
       - BASE_CODE_PATH=${BASE_CODE_PATH}
-      - UPDATE_COMPOSE_FILE=/compose/docker-compose.dist.yml
+      - COMPOSE_PROJECT_PATH=${COMPOSE_PROJECT_PATH}
+      - UPDATE_COMPOSE_FILE=${COMPOSE_PROJECT_PATH}/docker-compose.dist.yml
     security_opt:
       - apparmor=unconfined
     networks:
