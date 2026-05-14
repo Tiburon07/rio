@@ -70,7 +70,7 @@ services:
       - ${HOST_VOLUME}:${HOST_VOLUME}
       - /var/run/docker.sock:/var/run/docker.sock
       - ${COMPOSE_PROJECT_PATH}:${COMPOSE_PROJECT_PATH}:ro
-    working_dir: ${COMPOSE_PROJECT_PATH}
+    working_dir: /app
     command: celery -A config worker --loglevel=info
     env_file:
       - ${ENV_FILE:-.env}
