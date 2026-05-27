@@ -173,6 +173,12 @@ MYSQL_PASSWORD=una-password-sicura
 MYSQL_DATABASE=rioaction
 ```
 
+**SQLite*
+
+```ini
+DB_ENGINE=sqlite
+```
+
 ---
 
 ## 4. Avviare l'applicazione
