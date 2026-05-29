@@ -145,6 +145,9 @@ services:
       - TZ=Europe/Rome
       - CONTAINER_UID=${CONTAINER_UID:-1000}
       - CONTAINER_USER=${CONTAINER_USER:-tib}
+    security_opt:
+      - apparmor=unconfined
+      - seccomp=unconfined
     networks:
       - project_nw
 
