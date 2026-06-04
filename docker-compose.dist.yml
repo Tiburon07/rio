@@ -32,6 +32,7 @@ services:
       - HOST_HOME=${HOST_HOME:-}
     security_opt:
       - apparmor=unconfined
+      - seccomp=unconfined
     networks:
       - project_nw
 
