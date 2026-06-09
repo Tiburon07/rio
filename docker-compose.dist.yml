@@ -82,6 +82,7 @@ services:
       - UPDATE_COMPOSE_FILE=${COMPOSE_PROJECT_PATH}/docker-compose.dist.yml
     security_opt:
       - apparmor=unconfined
+      - seccomp=unconfined
     networks:
       - project_nw
 
@@ -135,8 +136,9 @@ services:
         mkdir -p /var/lib/code-server/home/.config
         chown -R "$${CONTAINER_UID}:$${CONTAINER_UID}" /var/lib/code-server
         usermod -d /var/lib/code-server/home -s /bin/bash "$${CONTAINER_USER}" 2>/dev/null || true
-        exec sudo -u "$${CONTAINER_USER}" \
-          HOME=/var/lib/code-server/home \
+        rm -rf /var/lib/code-server/extensions/openai.chatgpt* 2>/dev/null || true
+        exec runuser -u "$${CONTAINER_USER}" -- \
+          env HOME=/var/lib/code-server/home \
           USER="$${CONTAINER_USER}" \
           LOGNAME="$${CONTAINER_USER}" \
           SHELL=/bin/bash \
