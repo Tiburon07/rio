@@ -2,7 +2,11 @@ services:
   migrate:
     image: tiburon07/rioaction-backend:latest
     container_name: rioaction_migrate
-    command: python manage.py migrate --noinput
+    command: >
+      sh -c "python manage.py migrate --noinput &&
+      python manage.py seed_prompt_configs &&
+      python manage.py seed_prompt_placeholders &&
+      python manage.py seed_auto_runner"
     env_file:
       - ${ENV_FILE:-.env}
     environment:
@@ -83,6 +87,9 @@ services:
     security_opt:
       - apparmor=unconfined
       - seccomp=unconfined
+    dns:
+      - ${DOCKER_DNS_PRIMARY:-1.1.1.1}
+      - ${DOCKER_DNS_SECONDARY:-8.8.8.8}
     networks:
       - project_nw
 
