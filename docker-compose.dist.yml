@@ -37,6 +37,31 @@ services:
       - CONTAINER_USER=${CONTAINER_USER:-}
       - HOST_USER=${HOST_USER:-}
       - HOST_HOME=${HOST_HOME:-}
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        set -e
+        if [ -n "$${CONTAINER_USER:-}" ] && [ -n "$${CONTAINER_UID:-}" ]; then
+          existing_user=$$(getent passwd "$${CONTAINER_UID}" | cut -d: -f1 | head -n1)
+          existing_group=$$(getent group "$${CONTAINER_UID}" | cut -d: -f1 | head -n1)
+          if [ -n "$$existing_user" ] && [ "$$existing_user" != "$${CONTAINER_USER}" ]; then
+            if id -u "$${CONTAINER_USER}" >/dev/null 2>&1; then
+              userdel "$${CONTAINER_USER}" 2>/dev/null || true
+            fi
+            if getent group "$${CONTAINER_USER}" >/dev/null 2>&1; then
+              groupdel "$${CONTAINER_USER}" 2>/dev/null || true
+            fi
+            [ -n "$$existing_group" ] && groupmod -n "$${CONTAINER_USER}" "$$existing_group" 2>/dev/null || true
+            usermod -l "$${CONTAINER_USER}" -g "$${CONTAINER_USER}" "$$existing_user"
+          elif [ -z "$$existing_user" ]; then
+            groupadd -g "$${CONTAINER_UID}" "$${CONTAINER_USER}"
+            useradd -u "$${CONTAINER_UID}" -g "$${CONTAINER_UID}" -M -s /bin/bash "$${CONTAINER_USER}"
+          fi
+          usermod -d "$${HOST_HOME:-/home/$${CONTAINER_USER}}" -s /bin/bash "$${CONTAINER_USER}" 2>/dev/null || true
+          echo "$${CONTAINER_USER} ALL=(ALL) NOPASSWD:ALL" > "/etc/sudoers.d/$${CONTAINER_USER}"
+        fi
+        exec daphne -b 0.0.0.0 -p 8000 config.asgi:application
     security_opt:
       - apparmor=unconfined
       - seccomp=unconfined
@@ -87,6 +112,36 @@ services:
       - BASE_CODE_PATH=${BASE_CODE_PATH}
       - COMPOSE_PROJECT_PATH=${COMPOSE_PROJECT_PATH}
       - UPDATE_COMPOSE_FILE=${COMPOSE_PROJECT_PATH}/docker-compose.dist.yml
+      - CONTAINER_UID=${CONTAINER_UID:-1000}
+      - CONTAINER_USER=${CONTAINER_USER:-}
+      - HOST_USER=${HOST_USER:-}
+      - HOST_HOME=${HOST_HOME:-}
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        set -e
+        if [ -n "$${CONTAINER_USER:-}" ] && [ -n "$${CONTAINER_UID:-}" ]; then
+          existing_user=$$(getent passwd "$${CONTAINER_UID}" | cut -d: -f1 | head -n1)
+          existing_group=$$(getent group "$${CONTAINER_UID}" | cut -d: -f1 | head -n1)
+          if [ -n "$$existing_user" ] && [ "$$existing_user" != "$${CONTAINER_USER}" ]; then
+            if id -u "$${CONTAINER_USER}" >/dev/null 2>&1; then
+              userdel "$${CONTAINER_USER}" 2>/dev/null || true
+            fi
+            if getent group "$${CONTAINER_USER}" >/dev/null 2>&1; then
+              groupdel "$${CONTAINER_USER}" 2>/dev/null || true
+            fi
+            [ -n "$$existing_group" ] && groupmod -n "$${CONTAINER_USER}" "$$existing_group" 2>/dev/null || true
+            usermod -l "$${CONTAINER_USER}" -g "$${CONTAINER_USER}" "$$existing_user"
+          elif [ -z "$$existing_user" ]; then
+            groupadd -g "$${CONTAINER_UID}" "$${CONTAINER_USER}"
+            useradd -u "$${CONTAINER_UID}" -g "$${CONTAINER_UID}" -M -s /bin/bash "$${CONTAINER_USER}"
+          fi
+          usermod -d "$${HOST_HOME:-/home/$${CONTAINER_USER}}" -s /bin/bash "$${CONTAINER_USER}" 2>/dev/null || true
+          echo "$${CONTAINER_USER} ALL=(ALL) NOPASSWD:ALL" > "/etc/sudoers.d/$${CONTAINER_USER}"
+        fi
+        exec "$$@"
+      - --
     security_opt:
       - apparmor=unconfined
       - seccomp=unconfined
