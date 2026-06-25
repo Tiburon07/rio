@@ -18,8 +18,11 @@ services:
   backend:
     image: tiburon07/rioaction-backend:latest
     container_name: rioaction_backend
+    group_add:
+      - ${DOCKER_GID:-1001}
     volumes:
       - ${HOST_VOLUME}:${HOST_VOLUME}
+      - /var/run/docker.sock:/var/run/docker.sock
     env_file:
       - ${ENV_FILE:-.env}
     depends_on:
