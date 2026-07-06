@@ -37,6 +37,8 @@ services:
       - CONTAINER_USER=${CONTAINER_USER:-}
       - HOST_USER=${HOST_USER:-}
       - HOST_HOME=${HOST_HOME:-}
+      - NODE_BIN=${NODE_BIN:-/usr/bin/node}
+      - PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games
     entrypoint:
       - /bin/sh
       - -c
@@ -117,6 +119,8 @@ services:
       - CONTAINER_USER=${CONTAINER_USER:-}
       - HOST_USER=${HOST_USER:-}
       - HOST_HOME=${HOST_HOME:-}
+      - NODE_BIN=${NODE_BIN:-/usr/bin/node}
+      - PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games
     entrypoint:
       - /bin/sh
       - -c
@@ -173,6 +177,7 @@ services:
     user: root
     volumes:
       - ${HOST_VOLUME}:${HOST_VOLUME}
+      - ${HOST_HOME}/.ssh:/var/lib/code-server/home/.ssh:ro
       - project_codeserver_data:/var/lib/code-server
     entrypoint:
       - /bin/sh
@@ -200,7 +205,7 @@ services:
           useradd -u "$${CONTAINER_UID}" -g "$${CONTAINER_UID}" -M -s /bin/bash "$${CONTAINER_USER}"
         fi
         mkdir -p /var/lib/code-server/home/.config
-        find /var/lib/code-server -exec chown -h "$${CONTAINER_UID}:$${CONTAINER_UID}" {} +
+        find /var/lib/code-server -path /var/lib/code-server/home/.ssh -prune -o -exec chown -h "$${CONTAINER_UID}:$${CONTAINER_UID}" {} +
         usermod -d /var/lib/code-server/home -s /bin/bash "$${CONTAINER_USER}" 2>/dev/null || true
         rm -rf /var/lib/code-server/extensions/openai.chatgpt* 2>/dev/null || true
         exec runuser -u "$${CONTAINER_USER}" -- \
