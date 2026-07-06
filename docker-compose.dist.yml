@@ -199,7 +199,7 @@ services:
           useradd -u "$${CONTAINER_UID}" -g "$${CONTAINER_UID}" -M -s /bin/bash "$${CONTAINER_USER}"
         fi
         mkdir -p /var/lib/code-server/home/.config
-        chown -R "$${CONTAINER_UID}:$${CONTAINER_UID}" /var/lib/code-server
+        find /var/lib/code-server -exec chown -h "$${CONTAINER_UID}:$${CONTAINER_UID}" {} +
         usermod -d /var/lib/code-server/home -s /bin/bash "$${CONTAINER_USER}" 2>/dev/null || true
         rm -rf /var/lib/code-server/extensions/openai.chatgpt* 2>/dev/null || true
         exec runuser -u "$${CONTAINER_USER}" -- \
