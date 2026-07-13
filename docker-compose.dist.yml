@@ -38,6 +38,7 @@ services:
       - HOST_USER=${HOST_USER:-}
       - HOST_HOME=${HOST_HOME:-}
       - NODE_BIN=${NODE_BIN:-/usr/bin/node}
+      - DBGATE_DOCKER_NETWORK=${DBGATE_DOCKER_NETWORK:-rioaction_nw}
       - PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:/usr/sbin:/sbin
     entrypoint:
       - /bin/sh
@@ -120,6 +121,7 @@ services:
       - HOST_USER=${HOST_USER:-}
       - HOST_HOME=${HOST_HOME:-}
       - NODE_BIN=${NODE_BIN:-/usr/bin/node}
+      - DBGATE_DOCKER_NETWORK=${DBGATE_DOCKER_NETWORK:-rioaction_nw}
       - PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:/usr/sbin:/sbin
     entrypoint:
       - /bin/sh
