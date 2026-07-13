@@ -38,7 +38,7 @@ services:
       - HOST_USER=${HOST_USER:-}
       - HOST_HOME=${HOST_HOME:-}
       - NODE_BIN=${NODE_BIN:-/usr/bin/node}
-      - PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games
+      - PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:/usr/sbin:/sbin
     entrypoint:
       - /bin/sh
       - -c
@@ -120,7 +120,7 @@ services:
       - HOST_USER=${HOST_USER:-}
       - HOST_HOME=${HOST_HOME:-}
       - NODE_BIN=${NODE_BIN:-/usr/bin/node}
-      - PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games
+      - PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:/usr/sbin:/sbin
     entrypoint:
       - /bin/sh
       - -c
