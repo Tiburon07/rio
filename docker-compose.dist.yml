@@ -23,6 +23,10 @@ services:
     volumes:
       - ${HOST_VOLUME}:${HOST_VOLUME}
       - /var/run/docker.sock:/var/run/docker.sock
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    sysctls:
+      - net.ipv4.ip_unprivileged_port_start=0
     env_file:
       - ${ENV_FILE:-.env}
     depends_on:
@@ -106,7 +110,11 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${COMPOSE_PROJECT_PATH}:${COMPOSE_PROJECT_PATH}:ro
     working_dir: /app
-    command: celery -A config worker --loglevel=info
+    command: celery -A config worker --beat --scheduler config.beat:ResilientDatabaseScheduler --loglevel=info
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    sysctls:
+      - net.ipv4.ip_unprivileged_port_start=0
     env_file:
       - ${ENV_FILE:-.env}
     depends_on:

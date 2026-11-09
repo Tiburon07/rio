@@ -242,6 +242,14 @@ docker compose -f docker-compose.dist.yml down -v
 
 Quando è disponibile una nuova versione, apparirà un avviso direttamente nell'interfaccia della piattaforma. Clicca sul pulsante **Aggiorna** nell'alert per avviare l'aggiornamento automatico.
 
+In alternativa, dal terminale nella cartella `rio`:
+
+```bash
+make update   # git pull + scarica le immagini + riavvia i container
+```
+
+`make help` elenca gli altri comandi (`up`, `down`, `logs S=backend`, `ps`, `shell`, ...).
+
 
 ---
 
